@@ -18,8 +18,8 @@
     <tbody>
       {% for c in careers %}
       <tr class="th-bb last:border-0 transition-colors th-hover-bg">
-        <td class="td font-medium th-text">{{ c.nama }}</td>
-        <td class="td th-muted">{{ c.skills }}</td>
+        <td class="td font-medium"><a class="th-link" href="{{ url_for('admin.career_detail', cid=c.id) }}">{{ c.nama }}</a></td>
+        <td class="td th-muted">{% for nama, skor, mentah in c.top_skills %}{{ nama }} {{ mentah }}{% if not loop.last %}, {% endif %}{% endfor %}{% if c.n_skill_lain %} <span class="th-faint whitespace-nowrap">+{{ c.n_skill_lain }} lainnya</span>{% endif %}</td>
         <td class="td tabular-nums th-text-3">{{ c.gaji_min }}-{{ c.gaji_max }}</td>
         <td class="td tabular-nums th-text-3">{{ c.demand }}/10</td>
         <td class="td whitespace-nowrap">

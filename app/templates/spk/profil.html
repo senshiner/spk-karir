@@ -21,9 +21,9 @@
     {% if skill_error %}<p class="text-sm text-red-600 mb-3">{{ skill_error }}</p>{% endif %}
     <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-8">
       {% for baris in skill_rows %}
-      <div class="skill-row flex items-center justify-between gap-3 rounded-lg th-b px-3 py-2">
-        <label for="{{ baris.nama_input }}" class="text-sm font-medium th-text-3">{{ baris.label }}</label>
-        <select id="{{ baris.nama_input }}" name="{{ baris.nama_input }}" class="shrink-0 rounded-md th-b-strong px-2 py-1.5 font-mono text-sm th-text-2 focus:outline-none" style="background-color: var(--th-surface)">
+      <div class="skill-row flex flex-col gap-1.5 md:flex-row md:items-center md:justify-between md:gap-3 rounded-lg th-b px-3 py-2">
+        <label for="{{ baris.nama_input }}" class="text-sm font-medium th-text-3 md:min-w-0">{{ baris.label }}</label>
+        <select id="{{ baris.nama_input }}" name="{{ baris.nama_input }}" class="w-full md:w-auto md:shrink-0 rounded-md th-b-strong px-2 py-1.5 font-mono text-sm th-text-2 focus:outline-none" style="background-color: var(--th-surface); max-width: 100%;">
           {% for nilai, teks in skala %}
           <option value="{{ nilai }}"{% if baris.nilai == nilai %} selected{% endif %}>{{ nilai }}: {{ teks }}</option>
           {% endfor %}

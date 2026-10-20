@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Ubah Kriteria{% endblock %}
+{% block heading %}Ubah Kriteria {{ criterion.kode }}{% endblock %}
+{% block subheading %}Perbarui nama atau bobot kriteria.{% endblock %}
+{% block content %}
+<div class="card p-6 md:p-8 max-w-xl">
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-4">
+      <label class="label" for="nama">{{ form.nama.label.text }}</label>
+      {{ form.nama(class="input") }}
+      {% if form.nama.errors %}<p class="field-error">{{ form.nama.errors[0] }}</p>{% endif %}
+    </div>
+    <div class="mb-8">
+      <label class="label" for="bobot">{{ form.bobot.label.text }}</label>
+      {{ form.bobot(class="input", step="0.01") }}
+      {% if form.bobot.errors %}<p class="field-error">{{ form.bobot.errors[0] }}</p>{% endif %}
+    </div>
+    <div class="flex items-center gap-4">
+      {{ form.submit(class="btn-primary") }}
+      <a href="{{ url_for('admin.criteria') }}" class="text-sm font-medium text-slate-500 hover:text-slate-800">Batal</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

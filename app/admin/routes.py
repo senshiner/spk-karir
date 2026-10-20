@@ -21,7 +21,44 @@ def dashboard():
 @bp.route("/karier")
 @admin_required
 def careers():
-    return render_template("admin/careers.html", careers=Career.query.all())
+    daftar = Career.query.order_by(Career.nama).all()
+    for c in daftar:
+        urut = _urai_skill(c.skills)
+        c.top_skills = urut[:5]
+        c.n_skill_lain = max(0, len(urut) - 5)
+    return render_template("admin/careers.html", careers=daftar)
+
+
+@bp.route("/karier/<int:cid>")
+@admin_required
+def career_detail(cid):
+    career = Career.query.get_or_404(cid)
+    return render_template(
+        "admin/career_detail.html", career=career, skills=_urai_skill(career.skills)
+    )
+
+
+def _urai_skill(teks):
+    """Urai kolom skills "Nama:skor, ..." jadi list (nama, skor, skor_teks),
+    urut dari skor tertinggi. Nama asli dipertahankan untuk tampilan."""
+    daftar = []
+    for bagian in (teks or "").split(","):
+        bagian = bagian.strip()
+        if not bagian:
+            continue
+        if ":" in bagian:
+            nama, _, skor_teks = bagian.rpartition(":")
+            try:
+                skor = float(skor_teks.strip())
+            except ValueError:
+                skor = 0.0
+        else:
+            nama, skor_teks, skor = bagian, "", 0.0
+        nama = nama.strip()
+        if nama:
+            daftar.append((nama, skor, skor_teks.strip()))
+    daftar.sort(key=lambda x: x[1], reverse=True)
+    return daftar
 
 
 @bp.route("/karier/tambah", methods=["GET", "POST"])

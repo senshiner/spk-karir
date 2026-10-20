@@ -7,7 +7,7 @@
 <div class="card overflow-x-auto">
   <table class="w-full text-sm">
     <thead>
-      <tr class="border-b border-slate-200 bg-slate-50/60">
+      <tr class="th-bb th-bg-2">
         <th class="th">Nama</th>
         <th class="th">Skill</th>
         <th class="th">Gaji (jt/bln)</th>
@@ -17,20 +17,20 @@
     </thead>
     <tbody>
       {% for c in careers %}
-      <tr class="border-b border-slate-100 last:border-0 transition-colors hover:bg-slate-50">
-        <td class="td font-medium text-slate-900">{{ c.nama }}</td>
-        <td class="td text-slate-500">{{ c.skills }}</td>
-        <td class="td tabular-nums text-slate-600">{{ c.gaji_min }}-{{ c.gaji_max }}</td>
-        <td class="td tabular-nums text-slate-600">{{ c.demand }}/10</td>
+      <tr class="th-bb last:border-0 transition-colors th-hover-bg">
+        <td class="td font-medium th-text">{{ c.nama }}</td>
+        <td class="td th-muted">{{ c.skills }}</td>
+        <td class="td tabular-nums th-text-3">{{ c.gaji_min }}-{{ c.gaji_max }}</td>
+        <td class="td tabular-nums th-text-3">{{ c.demand }}/10</td>
         <td class="td whitespace-nowrap">
-          <a class="font-medium text-indigo-600 hover:text-indigo-800 mr-3" href="{{ url_for('admin.career_edit', cid=c.id) }}">Ubah</a>
+          <a class="font-medium th-link mr-3" href="{{ url_for('admin.career_edit', cid=c.id) }}">Ubah</a>
           <form class="inline" method="post" action="{{ url_for('admin.career_delete', cid=c.id) }}" onsubmit="return confirm('Hapus karier ini?')">
             <button class="font-medium text-red-600 hover:text-red-800" type="submit">Hapus</button>
           </form>
         </td>
       </tr>
       {% else %}
-      <tr><td colspan="5" class="td py-8 text-center text-slate-400">Belum ada data karier.</td></tr>
+      <tr><td colspan="5" class="td py-8 text-center th-faint">Belum ada data karier.</td></tr>
       {% endfor %}
     </tbody>
   </table>

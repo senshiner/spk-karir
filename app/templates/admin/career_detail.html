@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Detail Karier{% endblock %}
+{% block heading %}{{ career.nama }}{% endblock %}
+{% block subheading %}{{ career.deskripsi }}{% endblock %}
+{% block content %}
+<div class="mb-6 flex flex-wrap items-center gap-3">
+  <a href="{{ url_for('admin.career_edit', cid=career.id) }}" class="btn-primary">Ubah</a>
+  <a href="{{ url_for('admin.careers') }}" class="th-btn-secondary">Kembali</a>
+</div>
+<div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+  <div class="card p-5">
+    <p class="mb-1 text-xs uppercase tracking-wide th-faint">Gaji (juta/bln)</p>
+    <p class="text-2xl font-semibold tabular-nums th-text">{{ career.gaji_min }}&ndash;{{ career.gaji_max }}</p>
+  </div>
+  <div class="card p-5">
+    <p class="mb-1 text-xs uppercase tracking-wide th-faint">Demand pasar</p>
+    <p class="text-2xl font-semibold tabular-nums th-text">{{ career.demand }}/10</p>
+  </div>
+  <div class="card p-5">
+    <p class="mb-1 text-xs uppercase tracking-wide th-faint">Jumlah skill</p>
+    <p class="text-2xl font-semibold tabular-nums th-text">{{ skills|length }}</p>
+  </div>
+</div>
+<div class="card p-5 md:p-6">
+  <h2 class="mb-1 font-semibold th-text">Kebutuhan skill</h2>
+  <p class="mb-5 text-sm th-muted">Urut dari skor tertinggi, skala 1 sampai 5.</p>
+  <ul class="space-y-3">
+    {% for nama, skor, mentah in skills %}
+    <li>
+      <div class="mb-1 flex items-baseline justify-between gap-3">
+        <span class="text-sm font-medium th-text-2">{{ nama }}</span>
+        <span class="shrink-0 text-sm tabular-nums th-muted">{{ mentah if mentah else skor }}</span>
+      </div>
+      <div class="th-track h-2 overflow-hidden rounded-full">
+        <div class="th-bar h-full rounded-full" style="width: {{ '%.1f'|format(([skor, 5]|min) / 5 * 100) }}%"></div>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

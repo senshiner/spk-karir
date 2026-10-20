@@ -21,7 +21,7 @@
       {{ form.skills(class="input font-mono text-[13px]", rows=2) }}
       {% if form.skills.errors %}<p class="field-error">{{ form.skills.errors[0] }}</p>{% endif %}
     </div>
-    <div class="grid grid-cols-3 gap-4 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
       <div>
         <label class="label" for="gaji_min">{{ form.gaji_min.label.text }}</label>
         {{ form.gaji_min(class="input") }}

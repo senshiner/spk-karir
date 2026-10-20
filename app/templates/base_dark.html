@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}SPK Rekomendasi Karier{% endblock %}</title>
   {% include "partials/head_assets.html" %}
-  {% include "partials/hasil_theme.html" %}
+  {% include "partials/theme.html" %}
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body class="th-bg font-sans">
@@ -70,16 +70,7 @@
         </a>
       {% endif %}
     </nav>
-    <div class="px-5 py-4 th-bt">
-      {% if current_user.is_authenticated %}
-        <p class="text-sm font-semibold th-text-2">{{ current_user.nama or current_user.username }}</p>
-        <p class="text-xs capitalize th-faint">{{ current_user.role }}</p>
-        <a href="{{ url_for('auth.logout') }}" class="mt-3 inline-flex items-center gap-2 text-sm th-muted th-hover-text transition-colors">
-          <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Keluar
-        </a>
-      {% endif %}
-    </div>
+    {% include "partials/sidebar_footer.html" %}
   </aside>
 
   <!-- Konten -->
@@ -97,11 +88,11 @@
         {% if messages %}
           <div class="space-y-2 mb-6">
             {% for category, message in messages %}
-              <div class="px-4 py-3 rounded-lg border text-sm
-                {% if category == 'danger' %}bg-red-500/10 border-red-500/30 text-red-300
-                {% elif category == 'success' %}bg-emerald-500/10 border-emerald-500/30 text-emerald-300
-                {% elif category == 'warning' %}bg-amber-500/10 border-amber-500/30 text-amber-300
-                {% else %}bg-indigo-500/10 border-indigo-500/30 text-indigo-200{% endif %}">
+              <div class="px-4 py-3 text-sm th-flash
+                {% if category == 'danger' %}th-flash-danger
+                {% elif category == 'success' %}th-flash-success
+                {% elif category == 'warning' %}th-flash-warning
+                {% else %}th-flash-info{% endif %}">
                 {{ message }}
               </div>
             {% endfor %}
@@ -129,32 +120,7 @@ if (btn) {
   });
 }
 </script>
-<script>
-// Toggle tema terang/gelap halaman hasil. Pilihan tersimpan di
-// localStorage (kunci spk-hasil-theme); default dark.
-(function () {
-  var btn = document.getElementById('themeToggle');
-  var root = document.documentElement;
-  function paint() {
-    var dark = root.getAttribute('data-theme') !== 'light';
-    var sun = document.getElementById('themeIconSun');
-    var moon = document.getElementById('themeIconMoon');
-    if (sun) sun.classList.toggle('hidden', !dark);
-    if (moon) moon.classList.toggle('hidden', dark);
-    if (btn) btn.setAttribute('aria-label', dark ? 'Ganti ke mode terang' : 'Ganti ke mode gelap');
-  }
-  if (btn) {
-    btn.addEventListener('click', function () {
-      var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      root.setAttribute('data-theme', next);
-      try { localStorage.setItem('spk-hasil-theme', next); } catch (e) {}
-      paint();
-      if (window.hasilChartApplyTheme) window.hasilChartApplyTheme(next);
-    });
-  }
-  paint();
-})();
-</script>
+
 {% block scripts %}{% endblock %}
 </body>
 </html>

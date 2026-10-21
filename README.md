@@ -1,6 +1,6 @@
 <div align="center">
 
-# **Rancang Bangun Sistem Pendukung Keputusan Rekomendasi Karier Mahasiswa Informatika Berbasis Web Menggunakan Metode Content-Based Filtering dan Simple Additive Weighting (SAW)**
+# **Implementasi Sistem Pendukung Keputusan Rekomendasi Karier Mahasiswa Informatika Berbasis Web Menggunakan Metode Content-Based Filtering dan Simple Additive Weighting (SAW)**
 
 *SPK Karier: sistem pendukung keputusan berbasis web untuk merekomendasikan karier mahasiswa Informatika.*
 
@@ -8,17 +8,14 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
 ![Flask](https://img.shields.io/badge/Flask-3.x-black)
-![Dataset](https://img.shields.io/badge/Dataset-1.066%20lowongan%20%C2%B7%2022%20karier-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-| | |
+| Metode | Peran |
 |---|---|
-| 22 okupasi IT Indonesia | matriks kebutuhan skill 22 jabatan × 30 hard skill |
-| 1.066 lowongan asli | text mining id.indeed.com dan glints.com, snapshot Oktober 2026 |
-| 2 metode SPK | Content-Based Filtering (cosine similarity) + SAW (4 kriteria berbobot) |
-| Transparansi penuh | matriks keputusan, matriks ternormalisasi, dan skor preferensi ditampilkan di halaman hasil |
+| Content-Based Filtering | Mengukur kecocokan skill (cosine similarity) |
+| Simple Additive Weighting | Memberi peringkat akhir dari 4 kriteria berbobot |
 
-[Metodologi](docs/METHODOLOGY.md) · [Deploy](DEPLOY.md) · [Dataset](data-loker-id/) · [Analisis Sensitivitas](analysis/hasil_sensitivitas.md)
+[Fitur](#fitur) · [Cara Jalan](#cara-jalan) · [Deploy](#deploy) · [Struktur](#struktur) · [Dataset](#dataset) · [Analisis Sensitivitas](#analisis-sensitivitas)
 
 </div>
 
@@ -26,14 +23,14 @@
 
 - **Autentikasi berbasis peran**: admin mengelola data, mahasiswa menerima rekomendasi.
 - **Form profil mahasiswa**: nama, tingkat penguasaan tiap skill (skala 0 sampai 5), dan karier yang diminati.
-- **Perhitungan dua tahap**: CBF mengukur kecocokan skill, SAW memberi peringkat akhir dari 4 kriteria berbobot.
-- **Bobot SAW kustom**: mahasiswa dapat mengatur ulang bobot kriteria di halaman hasil tanpa mengubah bobot default; bobot yang dipakai tercatat di riwayat dan ekspor CSV.
-- **Riwayat perhitungan**: setiap perhitungan tersimpan sebagai batch tersendiri dan bisa dibuka ulang.
-- **Export CSV** dan panel admin (CRUD karier dan kriteria).
+- **Perhitungan dua tahap**: CBF untuk skor kecocokan skill, SAW untuk peringkat akhir.
+- **Transparansi penuh**: halaman hasil menampilkan matriks keputusan, matriks ternormalisasi, dan skor preferensi tiap karier, plus grafik Chart.js.
+- **Riwayat perhitungan**: setiap perhitungan disimpan sebagai batch tersendiri; hasil lama bisa dibuka ulang tanpa tertimpa.
+- **Bobot ditetapkan peneliti**: bobot kriteria SAW ditentukan peneliti sebagai data master (dikelola admin); seluruh perhitungan memakai bobot yang sama dan bobot yang dipakai tercatat pada tiap batch, halaman riwayat, dan ekspor CSV.
+- **Export CSV**: unduh hasil rekomendasi batch terbaru sebagai berkas CSV.
+- **Panel admin**: kelola data karier (skill, gaji, demand) serta kriteria dan bobot SAW.
 
 ## Cara Jalan
-
-Jalankan perintah berikut dari folder proyek untuk menyalakan aplikasi secara lokal:
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
@@ -43,7 +40,15 @@ python seed.py
 python run.py
 ```
 
-Perintah `seed.py` mengisi database dari CSV di `data-loker-id/` dan aman dijalankan ulang kapan saja. Setelah server menyala, buka `http://127.0.0.1:5000`, lalu masuk sebagai admin (`admin` / `admin123`, segera ganti) atau daftar sebagai mahasiswa.
+Buka `http://127.0.0.1:5000`, masuk sebagai admin (`admin` / `admin123`, segera ganti) atau daftar sebagai mahasiswa.
+
+## Deploy
+
+Panduan lengkap di [DEPLOY.md](DEPLOY.md): deploy ke VPS dengan Docker
+(`docker build` + `docker run`, volume untuk SQLite atau `DATABASE_URL`
+untuk Postgres) dan opsi PythonAnywhere (virtualenv, konfigurasi WSGI,
+seed). Wajib ganti kredensial admin default dan set `SECRET_KEY` lewat
+environment sebelum aplikasi dibuka ke publik.
 
 ## Struktur
 
@@ -55,12 +60,73 @@ app/
 ├── services/    cbf.py (cosine similarity), saw.py (normalisasi + skor)
 ├── models.py    User, Career, Criterion, StudentProfile, RecommendationResult
 └── templates/   Jinja2 + Tailwind + Chart.js
-analysis/        analisis sensitivitas bobot
-data-loker-id/   Dataset Lowongan IT Indonesia (skill_matrix.csv, demand_gaji.csv, deskripsi.csv)
+analysis/        analisis sensitivitas bobot (Bab 4)
 ```
 
-## Dokumen
+## Diagram Perancangan
 
-- [docs/METHODOLOGY.md](docs/METHODOLOGY.md): metode CBF dan SAW, kriteria dan bobot, cara dataset dibangun, dan analisis sensitivitas.
-- [DEPLOY.md](DEPLOY.md): panduan deploy ke VPS (Docker) dan PythonAnywhere.
-- [data-loker-id/README.md](data-loker-id/README.md): metodologi dataset lengkap.
+Diagram use case, flowchart, activity, sequence, class, DFD, dan ERD tersedia sebagai gambar. Khusus ERD: digenerate dari skema database aktual (SQLite hasil seed, via refleksi SQLAlchemy) memakai script `gen_erd_real.py`, bukan digambar manual, sehingga dijamin 1:1 dengan tabel yang dipakai aplikasi (setara fitur Designer di phpMyAdmin).
+
+## Dataset
+
+Sistem ini memakai satu dataset primer, yaitu Dataset Lowongan IT Indonesia: matriks kebutuhan skill 22 jabatan IT × 30 hard skill yang dibangun sendiri melalui *text mining* 1.066 lowongan IT unik dari id.indeed.com dan glints.com (19–20 Oktober 2026, 39–55 lowongan per jabatan). File dataset ada di folder `data-loker-id/` (`skill_matrix.csv`, `demand_gaji.csv`, `deskripsi.csv`, `README.md` berisi metodologi lengkap).
+
+### Cara dataset dibangun (bahan Bab Metodologi)
+
+1. **Pengumpulan**: scraping halaman lowongan IT Indonesia (judul, deskripsi/requirements, info gaji). Sumber lain yang diuji namun gagal diakses dicatat di `data-loker-id/README.md`.
+2. **Ekstraksi skill**: pipeline NLP berbasis spaCy (`en_core_web_sm`) atas 30 hard skill teknis (SQL, Python, JavaScript, Git, AWS, Agile, Linux, dst.): segmentasi seksi deskripsi (hanya seksi persyaratan/kualifikasi/tanggung jawab yang dihitung, bukan profil perusahaan/benefit), pencocokan frasa sadar lemma, dan deteksi negasi ("X is a plus" / "tidak wajib" tidak dihitung). Validasi terhadap metode lama (*keyword matching*): agreement 99,68% pada 31.350 sel lowongan-skill; detail di `data-loker-id/README.md`.
+3. **Skor 1–5**: untuk tiap jabatan *o* dan skill *s*, `skor(o,s) = 1 + 4 × (pct(o,s) / max_pct(o))` dengan `pct` = % lowongan jabatan *o* yang menyebut skill *s* (satu desimal, relatif per jabatan).
+4. **Demand (C3)**: jumlah lowongan per jabatan, dinormalisasi min-max ke skala 1–10.
+5. **Gaji (C2)**: dari info gaji yang tercantum di lowongan (median/min/max per jabatan, dalam juta Rp/bulan).
+6. **Vektor CBF berbobot di kedua sisi**: skor 1–5 dipakai langsung sebagai entri vektor karier (tanpa threshold biner), sehingga nuansa tingkat kepentingan lestari. Vektor mahasiswa juga berbobot: tiap skill dinilai sendiri oleh mahasiswa dengan skala penguasaan 0 sampai 5 (0 = tidak menguasai, 5 = ahli) pada form profil, sehingga kedua vektor simetris. Simetri ini perbaikan bertahap atas model awal yang biner di kedua sisi (skill berskor 4.75 dan 3.50 disamakan 1.0, dan kedalaman penguasaan mahasiswa tidak tertangkap sama sekali).
+
+### Tabel demand & gaji per jabatan (dari dataset)
+
+| Karier | Demand (1-10) | Gaji (jt Rp/bln) | n lowongan | n gaji |
+|--------|---------------|------------------|------------|--------|
+| AI Engineer | 4 | 2-16 | 45 | 23 |
+| Backend Developer | 5 | 3-20 | 46 | 20 |
+| Cybersecurity Analyst | 9 | 3-28 | 54 | 19 |
+| Data Analyst | 1 | 2-12 | 39 | 16 |
+| Database Administrator | 8 | 2-23 | 52 | 24 |
+| Data Engineer | 8 | 5-15 | 52 | 16 |
+| DevOps Engineer | 3 | 4-20 | 43 | 18 |
+| Data Scientist | 6 | 3-50 | 48 | 17 |
+| Frontend Developer | 4 | 3-15 | 45 | 16 |
+| IT Project Manager | 4 | 3-26 | 45 | 20 |
+| IT Support | 4 | 3-9 | 45 | 17 |
+| Mobile Developer | 7 | 2-11 | 49 | 12 |
+| Network Architect | 9 | 2-17 | 54 | 22 |
+| Network Support | 4 | 2-13 | 45 | 26 |
+| Programmer | 8 | 2-15 | 52 | 20 |
+| QA Engineer | 9 | 2-25 | 53 | 18 |
+| Security Engineer | 8 | 5-18 | 51 | 20 |
+| Software Developer | 7 | 4-16 | 49 | 17 |
+| System Administrator | 10 | 2-16 | 55 | 19 |
+| System Analyst | 5 | 2-20 | 46 | 19 |
+| UI/UX Designer | 8 | 3-11 | 51 | 16 |
+| Web Developer | 6 | 2-40 | 47 | 19 |
+
+Demand adalah normalisasi min-max (skala 1-10) dari jumlah lowongan per jabatan atas 22 jabatan; gaji adalah rentang min-max observasi dengan median per jabatan tersimpan di `demand_gaji.csv`.
+
+### Keterbatasan dataset (bahan Bab Metodologi, ditulis jujur)
+
+- Dua sumber (Indeed + Glints); sampel 39–55 lowongan per jabatan.
+- Ekstraksi skill memakai NLP (spaCy) dengan segmentasi seksi dan deteksi negasi, tetapi tetap berbasis kamus 30 skill: sinonim/teknologi di luar kamus tidak tertangkap dan aturan negasi bersifat lokal.
+- Mayoritas iklan berbahasa Inggris; data gaji tersedia untuk 12–26 lowongan per jabatan (mayoritas dari Glints, karena portal itu lebih sering mencantumkan gaji).
+- *Snapshot* Oktober 2026. Pasar kerja berubah seiring waktu, jadi *re-scraping* berkala disarankan.
+- Validasi silang dengan Indotask (World Bank 2020) hanya kualitatif karena taksonomi skill berbeda; detailnya di `data-loker-id/README.md`.
+
+Jalankan seed ulang kapan saja: `python seed.py` (idempoten: data master lama dihapus lalu diisi ulang dari CSV). Lihat docstring `seed.py` untuk dokumentasi lengkap.
+
+## Analisis Sensitivitas
+
+Bobot kriteria SAW ditetapkan peneliti sebagai data master dan dikelola melalui panel admin. Seluruh perhitungan memakai bobot yang sama; bila total bobot bukan 1, sistem menormalisasikannya otomatis. Bobot yang benar-benar dipakai pada suatu perhitungan disimpan pada batch hasil, ditampilkan di halaman riwayat, dan disertakan sebagai baris metadata pada ekspor CSV, sehingga setiap hasil dapat ditelusuri.
+
+Untuk menguji seberapa stabil ranking terhadap perubahan bobot, jalankan:
+
+```bash
+python analysis/sensitivitas.py
+```
+
+Skrip ini mengevaluasi tiga profil contoh (Backend/Data, Jaringan, Frontend; tiap skill diberi rating penguasaan realistis 0 sampai 5) pada 6 skenario deterministik (dominasi tunggal tiap kriteria dan perturbasi C1 sebesar ±0,10) serta 200 sampel acak Dirichlet di sekitar bobot default (seed 42), memakai fungsi CBF dan SAW yang sama persis dengan aplikasi. Hasil ditulis ke `analysis/hasil_sensitivitas.md` (tabel dan kesimpulan, siap dikutip untuk Bab 4) dan `analysis/hasil_sensitivitas.csv`. Ringkasan hasil: peringkat pertama bertahan pada 91,6% skenario dan himpunan 3 besar utuh pada 74,6% skenario; perubahan terbesar terjadi pada skenario dominasi tunggal.

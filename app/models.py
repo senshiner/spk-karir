@@ -131,7 +131,7 @@ class RecommendationResult(db.Model):
     Kolom bobot menyimpan bobot SAW yang benar-benar dipakai pada
     batch ini, sebagai JSON list 4 angka yang SUDAH dinormalisasi
     (mis. "[0.35, 0.25, 0.2, 0.2]"). Sama di semua baris satu batch.
-    NULL untuk batch lama sebelum fitur bobot kustom ada.
+    NULL untuk batch lama yang dibuat sebelum kolom ini ada.
     """
 
     id = db.Column(db.Integer, primary_key=True)

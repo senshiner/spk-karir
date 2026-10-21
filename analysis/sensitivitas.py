@@ -306,15 +306,15 @@ def main():
         f"2. {kalimat_nuansa}",
         f"3. {kalimat_stabilitas}",
         f"4. Skenario dominasi tunggal (satu kriteria 0.70) menghasilkan "
-        "perubahan terbesar; dominasi C2 (gaji) dan C3 (demand) paling "
-        "berpengaruh karena kedua kriteria ini tidak bergantung pada "
+        f"perubahan terbesar; dominasi C2 (gaji) dan C3 (demand) paling "
+        f"berpengaruh karena kedua kriteria ini tidak bergantung pada "
         f"profil mahasiswa. Rata-rata pergeseran peringkat keseluruhan "
-        f"sebesar {gsg:.2f} posisi dari 22 karier per skenario.",
-        "5. Implikasi untuk penelitian: bobot default "
-        "(0.35/0.25/0.20/0.20) layak dipakai karena ranking cukup stabil "
-        "pada variasi wajar, namun panel bobot kustom tetap perlu "
-        "ditawarkan agar mahasiswa yang memprioritaskan gaji atau demand "
-        "dapat menyesuaikan.",
+        f"sebesar {gsg:.2f} posisi dari 19 karier per skenario.",
+        f"5. Implikasi untuk penelitian: bobot default "
+        f"(0.35/0.25/0.20/0.20) layak dipakai karena ranking cukup stabil "
+        f"pada variasi wajar, namun panel bobot kustom tetap perlu "
+        f"ditawarkan agar mahasiswa yang memprioritaskan gaji atau demand "
+        f"dapat menyesuaikan.",
     ]
     isi = "\n".join(header + kesimpulan + [""] + hasil_md)
     with open(os.path.join(BASE_DIR, "hasil_sensitivitas.md"), "w",

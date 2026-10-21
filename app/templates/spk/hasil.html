@@ -7,13 +7,8 @@
 
 {# ---------- Info bobot yang dipakai batch ini ---------- #}
 <div class="th-card px-5 py-4 mb-8 text-sm flex flex-wrap items-center gap-x-3 gap-y-2">
-  <span class="font-semibold th-text-2">Bobot yang dipakai pada perhitungan ini:</span>
+  <span class="font-semibold th-text-2">Bobot yang dipakai pada perhitungan ini (ditetapkan peneliti):</span>
   <span class="font-mono th-text-3">{% for c in detail.criteria %}{{ c.kode }} = {{ '%.2f'|format(bobot_batch[loop.index0]) }}{% if not loop.last %} &middot; {% endif %}{% endfor %}</span>
-  {% if batch_kustom %}
-  <span class="th-badge th-badge-kustom">bobot kustom</span>
-  {% else %}
-  <span class="th-badge th-badge-default">bobot default</span>
-  {% endif %}
   {% if detail.bobot_dinormalisasi %}
   <span class="basis-full th-muted">Total bobot bukan 1, sehingga bobot dinormalisasi otomatis sebelum perhitungan.</span>
   {% endif %}
@@ -75,28 +70,6 @@
   <div class="relative h-[430px]">
     <canvas id="chartSkor"></canvas>
   </div>
-</div>
-
-{# ---------- Panel atur bobot ---------- #}
-<div class="th-card p-6 md:p-7 mb-8">
-  <p class="font-display text-base font-semibold th-text mb-2">Atur Bobot Kriteria</p>
-  <p class="text-sm th-muted mb-5">Sesuaikan bobot tiap kriteria (0 sampai 1) lalu hitung ulang. Bobot ini hanya berlaku untuk sesi Anda dan tidak mengubah bobot default. Bila total bukan 1, bobot dinormalisasi otomatis.</p>
-  <form method="post" action="{{ url_for('spk.atur_bobot') }}">
-    <div class="flex flex-wrap items-end gap-4 mb-4">
-      {% for c in detail.criteria %}
-      <label class="block">
-        <span class="block text-xs th-muted mb-1.5"><span class="font-mono font-semibold th-text-2">{{ c.kode }}</span> &middot; {{ c.nama }}</span>
-        <input type="number" name="b{{ loop.index }}" min="0" max="1" step="0.05" value="{{ '%.2f'|format(bobot_sesi[loop.index0]) }}" class="th-input font-mono w-28">
-      </label>
-      {% endfor %}
-      <button type="submit" class="btn-primary">Hitung Ulang</button>
-    </div>
-  </form>
-  {% if kustom_aktif %}
-  <form method="post" action="{{ url_for('spk.reset_bobot') }}">
-    <button type="submit" class="th-btn-outline">Kembalikan ke Bobot Default</button>
-  </form>
-  {% endif %}
 </div>
 
 {# ---------- Detail perhitungan SAW ---------- #}

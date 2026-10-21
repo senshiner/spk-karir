@@ -58,6 +58,7 @@ import argparse
 import csv
 import os
 import statistics
+import sys
 
 DEFAULT_DATASET_DIR = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "data-loker-id"

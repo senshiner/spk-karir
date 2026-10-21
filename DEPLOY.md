@@ -51,7 +51,7 @@ tambahkan sendiri bila memakai opsi ini.
 
 1. Upload seluruh file proyek (kecuali `venv/`, `__pycache__/`,
    `instance/`, `.env`) ke akun PythonAnywhere, mis. ke
-   `/home/username/spk-karir`.
+   `/home/username/spk-rekomendasi-karier`.
 2. Buka konsol Bash, buat virtualenv dan install dependensi:
 
    ```bash
@@ -68,8 +68,8 @@ tambahkan sendiri bila memakai opsi ini.
 
    ```python
    import os, sys
-   sys.path.insert(0, "/home/username/spk-karir")
-   os.chdir("/home/username/spk-karir")
+   sys.path.insert(0, "/home/username/spk-rekomendasi-karier")
+   os.chdir("/home/username/spk-rekomendasi-karier")
    from app import create_app
    application = create_app()
    ```
@@ -80,6 +80,6 @@ tambahkan sendiri bila memakai opsi ini.
 ## Periksa deploy berhasil
 
 Buka URL aplikasi: halaman login muncul, masuk sebagai `admin`,
-dasbor menampilkan 22 karier dan 4 kriteria. Daftarkan satu
+dasbor menampilkan 14 karier dan 4 kriteria. Daftarkan satu
 akun mahasiswa, isi profil, dan pastikan halaman hasil menampilkan
-peringkat 22 karier.
+peringkat 14 karier.

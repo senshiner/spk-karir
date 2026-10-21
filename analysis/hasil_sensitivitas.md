@@ -13,7 +13,7 @@ Tiga profil contoh dievaluasi pada 6 skenario deterministik (di luar default) + 
 1. Pada ketiga profil, peringkat pertama (top-1) bertahan pada 91.6% dari seluruh skenario (6 deterministik + 200 acak per profil); himpunan 3 besar (top-3) utuh pada 74.6% skenario dengan rata-rata irisan 2.74 dari 3.
 2. Kestabilan tidak merata antarprofil: top-1 paling mudah berubah pada Profil 1 (Backend/Data) (75.7% bertahan), sedangkan kandungan top-3 paling mudah berubah pada Profil 3 (Frontend) (utuh 43.7%).
 3. Hasil ini menunjukkan rekomendasi teratas relatif stabil terhadap perubahan bobot yang wajar di sekitar bobot default.
-4. Skenario dominasi tunggal (satu kriteria 0.70) menghasilkan perubahan terbesar; dominasi C2 (gaji) dan C3 (demand) paling berpengaruh karena kedua kriteria ini tidak bergantung pada profil mahasiswa. Rata-rata pergeseran peringkat keseluruhan sebesar 0.72 posisi dari 22 karier per skenario.
+4. Skenario dominasi tunggal (satu kriteria 0.70) menghasilkan perubahan terbesar; dominasi C2 (gaji) dan C3 (demand) paling berpengaruh karena kedua kriteria ini tidak bergantung pada profil mahasiswa. Rata-rata pergeseran peringkat keseluruhan sebesar 0.72 posisi dari 19 karier per skenario.
 5. Implikasi untuk penelitian: bobot default (0.35/0.25/0.20/0.20) layak dipakai karena ranking cukup stabil pada variasi wajar, namun panel bobot kustom tetap perlu ditawarkan agar mahasiswa yang memprioritaskan gaji atau demand dapat menyesuaikan.
 
 ## Profil 1 (Backend/Data)

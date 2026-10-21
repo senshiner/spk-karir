@@ -23,17 +23,17 @@
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
       <div>
-        <label class="label" for="gaji_min">{{ form.gaji_min.label.text }}</label>
+        <label class="label md:min-h-10" for="gaji_min">{{ form.gaji_min.label.text }}</label>
         {{ form.gaji_min(class="input") }}
         {% if form.gaji_min.errors %}<p class="field-error">{{ form.gaji_min.errors[0] }}</p>{% endif %}
       </div>
       <div>
-        <label class="label" for="gaji_max">{{ form.gaji_max.label.text }}</label>
+        <label class="label md:min-h-10" for="gaji_max">{{ form.gaji_max.label.text }}</label>
         {{ form.gaji_max(class="input") }}
         {% if form.gaji_max.errors %}<p class="field-error">{{ form.gaji_max.errors[0] }}</p>{% endif %}
       </div>
       <div>
-        <label class="label" for="demand">{{ form.demand.label.text }}</label>
+        <label class="label md:min-h-10" for="demand">{{ form.demand.label.text }}</label>
         {{ form.demand(class="input") }}
         {% if form.demand.errors %}<p class="field-error">{{ form.demand.errors[0] }}</p>{% endif %}
       </div>

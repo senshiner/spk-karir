@@ -2,9 +2,9 @@ from flask import flash, redirect, render_template, url_for
 
 from app import db
 from app.admin import bp
-from app.admin.forms import CareerForm, CriterionForm
+from app.admin.forms import CareerForm, CriterionForm, ResetPasswordForm
 from app.decorators import admin_required
-from app.models import Career, Criterion, RecommendationResult, StudentProfile
+from app.models import Career, Criterion, RecommendationResult, StudentProfile, User
 
 
 @bp.route("/")
@@ -155,3 +155,35 @@ def criterion_delete(cid):
     db.session.commit()
     flash("Kriteria dihapus.", "info")
     return redirect(url_for("admin.criteria"))
+
+
+@bp.route("/pengguna")
+@admin_required
+def users():
+    daftar = (
+        User.query.filter_by(role="mahasiswa").order_by(User.username).all()
+    )
+    punya_profil = {
+        p.user_id for p in StudentProfile.query.with_entities(StudentProfile.user_id)
+    }
+    for u in daftar:
+        u.punya_profil = u.id in punya_profil
+    return render_template("admin/users.html", users=daftar)
+
+
+@bp.route("/pengguna/<int:uid>/reset-sandi", methods=["GET", "POST"])
+@admin_required
+def user_reset_password(uid):
+    # Hanya akun mahasiswa yang boleh direset dari sini; akun admin
+    # tidak ditampilkan dan tidak bisa diubah lewat halaman ini.
+    user = User.query.filter_by(id=uid, role="mahasiswa").first_or_404()
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.kata_sandi_baru.data)
+        db.session.commit()
+        flash(
+            f"Kata sandi akun {user.username} berhasil direset.",
+            "success",
+        )
+        return redirect(url_for("admin.users"))
+    return render_template("admin/user_reset.html", form=form, user=user)

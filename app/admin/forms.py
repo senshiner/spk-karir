@@ -1,6 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import FloatField, IntegerField, StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, Length, NumberRange
+from wtforms import (
+    FloatField,
+    IntegerField,
+    PasswordField,
+    StringField,
+    SubmitField,
+    TextAreaField,
+)
+from wtforms.validators import DataRequired, EqualTo, Length, NumberRange
 
 
 class CareerForm(FlaskForm):
@@ -80,3 +87,28 @@ class CriterionForm(FlaskForm):
         ],
     )
     submit = SubmitField("Simpan")
+
+
+class ResetPasswordForm(FlaskForm):
+    """Reset kata sandi akun mahasiswa oleh admin.
+
+    Sistem tidak memakai email, jadi pemulihan kata sandi dilakukan
+    admin: mahasiswa yang lupa kata sandi melapor, admin menetapkan
+    kata sandi baru lewat form ini.
+    """
+
+    kata_sandi_baru = PasswordField(
+        "Kata sandi baru",
+        validators=[
+            DataRequired(message="Kata sandi baru wajib diisi."),
+            Length(min=6, message="Kata sandi minimal 6 karakter."),
+        ],
+    )
+    konfirmasi = PasswordField(
+        "Konfirmasi kata sandi baru",
+        validators=[
+            DataRequired(message="Konfirmasi kata sandi wajib diisi."),
+            EqualTo("kata_sandi_baru", message="Konfirmasi tidak sama dengan kata sandi baru."),
+        ],
+    )
+    submit = SubmitField("Reset Kata Sandi")

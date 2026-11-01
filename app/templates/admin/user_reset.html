@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Reset Kata Sandi{% endblock %}
+{% block heading %}Reset Kata Sandi Mahasiswa{% endblock %}
+{% block subheading %}Tetapkan kata sandi baru untuk akun {{ user.username }} ({{ user.nama or "-" }}), lalu sampaikan kata sandi baru tersebut langsung kepada mahasiswa yang bersangkutan.{% endblock %}
+{% block content %}
+<div class="card p-6 md:p-8 max-w-xl">
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-4">
+      <label class="label" for="kata_sandi_baru">{{ form.kata_sandi_baru.label.text }}</label>
+      {{ form.kata_sandi_baru(class="input") }}
+      {% if form.kata_sandi_baru.errors %}<p class="field-error">{{ form.kata_sandi_baru.errors[0] }}</p>{% endif %}
+    </div>
+    <div class="mb-8">
+      <label class="label" for="konfirmasi">{{ form.konfirmasi.label.text }}</label>
+      {{ form.konfirmasi(class="input") }}
+      {% if form.konfirmasi.errors %}<p class="field-error">{{ form.konfirmasi.errors[0] }}</p>{% endif %}
+    </div>
+    <div class="flex items-center gap-4">
+      {{ form.submit(class="btn-primary") }}
+      <a href="{{ url_for('admin.users') }}" class="text-sm font-medium th-muted hover:th-text-2">Batal</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

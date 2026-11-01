@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Pengguna Mahasiswa{% endblock %}
+{% block heading %}Pengguna Mahasiswa{% endblock %}
+{% block subheading %}Daftar akun mahasiswa terdaftar. Kata sandi mahasiswa yang lupa direset dari halaman ini.{% endblock %}
+{% block content %}
+<div class="card overflow-x-auto">
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="th-bb th-bg-2">
+        <th class="th">Nama</th>
+        <th class="th">Nama Pengguna</th>
+        <th class="th">Profil Skill</th>
+        <th class="th">Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr class="th-bb last:border-0 transition-colors th-hover-bg">
+        <td class="td font-medium">{{ u.nama or "-" }}</td>
+        <td class="td th-text-3">{{ u.username }}</td>
+        <td class="td th-muted">{{ "Sudah diisi" if u.punya_profil else "Belum diisi" }}</td>
+        <td class="td whitespace-nowrap">
+          <a class="font-medium th-link" href="{{ url_for('admin.user_reset_password', uid=u.id) }}">Reset Kata Sandi</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4" class="td py-8 text-center th-faint">Belum ada akun mahasiswa terdaftar.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

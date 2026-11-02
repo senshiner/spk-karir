@@ -1,7 +1,6 @@
 """Analisis sensitivitas bobot SAW (bahan Bab 4 skripsi).
 
 Menjawab pertanyaan: seberapa stabil ranking rekomendasi bila bobot
-Menjawab pertanyaan: seberapa stabil ranking rekomendasi bila bobot
 kriteria berubah? Tiga profil contoh dievaluasi pada 7 skenario
 deterministik dan 200 skenario acak Dirichlet di sekitar bobot
 default. Metode perhitungan SAMA PERSIS dengan aplikasi

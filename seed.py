@@ -1,6 +1,6 @@
 """Seed database dari Dataset Lowongan IT Indonesia (bukan data hardcode).
 
-Skrip ini membaca dua file CSV dari folder dataset:
+Skrip ini membaca tiga file CSV dari folder dataset:
   - skill_matrix.csv : 22 jabatan IT x 30 hard skill, skor 1-5
                        (kolom: kode_jabatan, nama_jabatan, skill, skor)
   - demand_gaji.csv  : demand & gaji per jabatan
@@ -214,6 +214,20 @@ def main():
         n_hasil = RecommendationResult.query.delete()
         n_karier_lama = Career.query.delete()
         n_kriteria_lama = Criterion.query.delete()
+        # Migrasi ringan: kolom Criterion.tipe sudah dihapus dari model
+        # (tidak pernah dibaca siapa pun). Buang dari database lama bila
+        # masih ada agar INSERT tidak gagal NOT NULL.
+        try:
+            cols = [
+                r[1]
+                for r in db.session.execute(
+                    db.text("PRAGMA table_info(criterion)")
+                ).fetchall()
+            ]
+            if "tipe" in cols:
+                db.session.execute(db.text("ALTER TABLE criterion DROP COLUMN tipe"))
+        except Exception:
+            pass
 
         for baris in daftar_demand:
             kode = baris["kode_jabatan"]

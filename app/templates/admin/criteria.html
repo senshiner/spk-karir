@@ -47,9 +47,11 @@
         <td class="td font-mono th-text-3">{{ c.bobot }}</td>
         <td class="td whitespace-nowrap">
           <a class="font-medium th-link mr-3" href="{{ url_for('admin.criterion_edit', cid=c.id) }}">Ubah</a>
+          {% if c.kode not in ('C1', 'C2', 'C3', 'C4') %}
           <form class="inline" method="post" action="{{ url_for('admin.criterion_delete', cid=c.id) }}" onsubmit="return confirm('Hapus kriteria ini?')">
             <button class="font-medium text-red-600 hover:text-red-800" type="submit">Hapus</button>
           </form>
+          {% endif %}
         </td>
       </tr>
       {% else %}

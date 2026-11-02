@@ -34,17 +34,19 @@ sehingga nuansa tingkat kepentingan dan kedalaman penguasaan lestari.
 | C1 | Kecocokan skill (dari CBF) | 0,35 | cosine similarity profil vs vektor karier |
 | C2 | Gaji | 0,25 | median gaji observasi per jabatan (juta Rp/bulan) |
 | C3 | Demand | 0,20 | jumlah lowongan per jabatan, dinormalisasi min-max ke skala 1–10 |
-| C4 | Minat | 0,20 | 1 jika karier diminati di form profil, 0 jika tidak |
+| C4 | Minat | 0,20 | 1,0 jika karier diminati di form profil, 0,2 jika tidak |
 
 Keempat kriteria bertipe benefit; normalisasi memakai `rij = xij / max(xj)`, skor
 preferensi dihitung sebagai `Vi = Σ wj × rij`, dan peringkat diurutkan dari Vi terbesar.
 
-### Bobot kustom per mahasiswa
+### Bobot ditetapkan peneliti
 
-Mahasiswa dapat mengatur bobot C1 sampai C4 sendiri di halaman hasil (panel
-"Atur Bobot Kriteria"). Bobot kustom tersimpan di sesi pengguna dan tidak mengubah
-bobot default. Bila total bobot yang dimasukkan bukan 1, sistem menormalisasikannya
-otomatis dan mencatatnya. Bobot yang benar-benar dipakai pada suatu perhitungan
+Bobot C1 sampai C4 adalah data master yang ditetapkan peneliti dan dikelola
+lewat panel admin; pengguna (mahasiswa) tidak dapat mengubahnya. Kriteria inti
+C1..C4 tidak dapat dihapus agar perhitungan SAW tetap sah, dan bobot dipetakan
+berdasarkan kode kriteria (bukan posisi) sehingga tidak bergeser diam-diam.
+Bila total bobot yang tersimpan bukan 1, sistem menormalisasikannya otomatis
+sebelum menghitung. Bobot yang benar-benar dipakai pada suatu perhitungan
 (setelah normalisasi) disimpan pada batch hasil, ditampilkan di halaman riwayat,
 dan disertakan sebagai baris metadata pada ekspor CSV.
 

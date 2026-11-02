@@ -104,20 +104,33 @@ def _normalisasi_bobot(bobot):
     return list(bobot), False
 
 
+KRITERIA_INTi = ("C1", "C2", "C3", "C4")
+
+
+def _kriteria_inti():
+    """Kriteria C1..C4 urut kode. Melempar ValueError bila ada yang hilang.
+
+    Pemetaan berdasarkan kode (bukan posisi) agar penambahan atau
+    penghapusan kriteria di luar C1..C4 tidak menggeser bobot ke
+    kolom matriks yang salah secara diam-diam.
+    """
+    peta = {c.kode: c for c in Criterion.query.all()}
+    hilang = [k for k in KRITERIA_INTi if k not in peta]
+    if hilang:
+        raise ValueError(
+            "Kriteria inti tidak lengkap (hilang: %s). "
+            "Lengkapi C1 sampai C4 di panel admin." % ", ".join(hilang)
+        )
+    return [peta[k] for k in KRITERIA_INTi]
+
+
 def _bobot_default():
-    """Bobot default (urutan kode C1..C4)."""
-    return [
-        c.bobot for c in Criterion.query.order_by(Criterion.kode).all()
-    ]
-
-
-def _bobot_aktif():
-    """Bobot yang dipakai seluruh perhitungan: bobot default peneliti.
+    """Bobot default peneliti (urutan C1..C4), dipetakan via kode.
 
     Bobot ditetapkan peneliti sebagai data master (tabel Criterion,
     dikelola admin) dan tidak dapat diubah pengguna.
     """
-    return _bobot_default()
+    return [c.bobot for c in _kriteria_inti()]
 
 
 def _bobot_dari_batch(rows):
@@ -171,11 +184,11 @@ def _compute(profile, bobot=None):
     Melempar ValueError bila data master belum sah untuk dihitung.
     """
     careers = Career.query.order_by(Career.id).all()
-    criteria = Criterion.query.order_by(Criterion.kode).all()
-    if not careers or not criteria:
-        raise ValueError("Data karier atau kriteria belum lengkap.")
-    if len(criteria) != 4:
-        raise ValueError("Jumlah kriteria harus tepat 4 agar perhitungan SAW sah.")
+    if not careers:
+        raise ValueError("Data karier belum lengkap.")
+    # Kriteria inti C1..C4 wajib lengkap; dipetakan via kode agar
+    # urutan bobot selalu sejajar dengan kolom matriks keputusan.
+    criteria = _kriteria_inti()
     vocab = _vocabulary()
     vec_mhs = cbf.vectorize(profile.skill_scores(), vocab)
 
@@ -302,7 +315,7 @@ def hitung():
         flash("Isi profil terlebih dahulu.", "warning")
         return redirect(url_for("spk.profil"))
     try:
-        detail = _compute(profile, bobot=_bobot_aktif())
+        detail = _compute(profile, bobot=_bobot_default())
     except ValueError as e:
         flash(str(e), "danger")
         return redirect(url_for("spk.index"))

@@ -113,13 +113,18 @@ def criteria():
     criteria = Criterion.query.order_by(Criterion.kode).all()
     form = CriterionForm()
     if form.validate_on_submit():
-        # kode dari nomor terbesar yang ada + 1, agar tidak duplikat
-        # bila kriteria pernah dihapus
-        nomor = 0
-        for c in Criterion.query.all():
-            if c.kode and c.kode.startswith("C") and c.kode[1:].isdigit():
-                nomor = max(nomor, int(c.kode[1:]))
-        kode = f"C{nomor + 1}"
+        # Kode: isi nomor terkecil 1..4 yang kosong lebih dulu (jalur
+        # pemulihan bila kriteria inti pernah rusak), bila C1..C4 sudah
+        # lengkap lanjutkan ke C5, C6, ...
+        terpakai = {
+            int(c.kode[1:])
+            for c in Criterion.query.all()
+            if c.kode and c.kode.startswith("C") and c.kode[1:].isdigit()
+        }
+        nomor = next((n for n in (1, 2, 3, 4) if n not in terpakai), None)
+        if nomor is None:
+            nomor = max(terpakai) + 1 if terpakai else 1
+        kode = f"C{nomor}"
         db.session.add(
             Criterion(nama=form.nama.data.strip(), bobot=form.bobot.data, kode=kode)
         )
@@ -151,6 +156,15 @@ def criterion_edit(cid):
 @admin_required
 def criterion_delete(cid):
     criterion = Criterion.query.get_or_404(cid)
+    if criterion.kode in ("C1", "C2", "C3", "C4"):
+        # Kriteria inti tidak boleh dihapus: matriks keputusan SAW
+        # dibangun tepat untuk C1..C4, dan bobot dipetakan via kode.
+        flash(
+            "Kriteria C1 sampai C4 adalah kriteria inti dan tidak dapat "
+            "dihapus agar perhitungan SAW tetap sah.",
+            "warning",
+        )
+        return redirect(url_for("admin.criteria"))
     db.session.delete(criterion)
     db.session.commit()
     flash("Kriteria dihapus.", "info")

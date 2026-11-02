@@ -73,7 +73,6 @@ class Criterion(db.Model):
     kode = db.Column(db.String(10), unique=True, nullable=False)  # C1..Cn
     nama = db.Column(db.String(120), nullable=False)
     bobot = db.Column(db.Float, nullable=False, default=0.25)
-    tipe = db.Column(db.String(10), nullable=False, default="benefit")
 
 
 class StudentProfile(db.Model):

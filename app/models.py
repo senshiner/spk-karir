@@ -15,6 +15,9 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     role = db.Column(db.String(20), nullable=False, default="mahasiswa")
     nama = db.Column(db.String(120))
+    # True setelah kata sandi direset admin: mahasiswa wajib mengganti
+    # kata sandi sementaranya sendiri sebelum memakai sistem lagi.
+    wajib_ganti_sandi = db.Column(db.Boolean, nullable=False, default=False)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

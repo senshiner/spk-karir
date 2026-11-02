@@ -46,4 +46,10 @@
     {{ form.submit(class="btn-primary") }}
   </form>
 </div>
+
+<div class="card p-6 md:p-8 max-w-3xl mt-6">
+  <p class="font-display text-base font-semibold th-text mb-1">Keamanan Akun</p>
+  <p class="text-sm th-text-3 mb-4">Ganti kata sandi akun Anda secara berkala. Kata sandi lama diperlukan untuk verifikasi.</p>
+  <a href="{{ url_for('auth.ganti_sandi') }}" class="btn-primary">Ganti Kata Sandi</a>
+</div>
 {% endblock %}

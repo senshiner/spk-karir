@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Reset Kata Sandi{% endblock %}
 {% block heading %}Reset Kata Sandi Mahasiswa{% endblock %}
-{% block subheading %}Tetapkan kata sandi baru untuk akun {{ user.username }} ({{ user.nama or "-" }}), lalu sampaikan kata sandi baru tersebut langsung kepada mahasiswa yang bersangkutan.{% endblock %}
+{% block subheading %}Tetapkan kata sandi sementara untuk akun {{ user.username }} ({{ user.nama or "-" }}), lalu sampaikan langsung kepada mahasiswa yang bersangkutan. Saat login berikutnya, mahasiswa wajib mengganti kata sandi sementara ini dengan kata sandi pilihannya sendiri.{% endblock %}
 {% block content %}
 <div class="card p-6 md:p-8 max-w-xl">
   <form method="post">

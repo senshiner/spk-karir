@@ -98,17 +98,17 @@ class ResetPasswordForm(FlaskForm):
     """
 
     kata_sandi_baru = PasswordField(
-        "Kata sandi baru",
+        "Kata sandi sementara",
         validators=[
-            DataRequired(message="Kata sandi baru wajib diisi."),
+            DataRequired(message="Kata sandi sementara wajib diisi."),
             Length(min=6, message="Kata sandi minimal 6 karakter."),
         ],
     )
     konfirmasi = PasswordField(
-        "Konfirmasi kata sandi baru",
+        "Konfirmasi kata sandi sementara",
         validators=[
             DataRequired(message="Konfirmasi kata sandi wajib diisi."),
-            EqualTo("kata_sandi_baru", message="Konfirmasi tidak sama dengan kata sandi baru."),
+            EqualTo("kata_sandi_baru", message="Konfirmasi tidak sama dengan kata sandi sementara."),
         ],
     )
     submit = SubmitField("Reset Kata Sandi")

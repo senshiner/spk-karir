@@ -180,9 +180,14 @@ def user_reset_password(uid):
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.kata_sandi_baru.data)
+        # Kata sandi ini hanya sementara: mahasiswa wajib menggantinya
+        # sendiri saat login berikutnya (lihat before_request di app).
+        user.wajib_ganti_sandi = True
         db.session.commit()
         flash(
-            f"Kata sandi akun {user.username} berhasil direset.",
+            f"Kata sandi sementara akun {user.username} berhasil ditetapkan. "
+            "Sampaikan kepada mahasiswanya; ia wajib mengganti kata sandi "
+            "saat login berikutnya.",
             "success",
         )
         return redirect(url_for("admin.users"))

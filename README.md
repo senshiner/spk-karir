@@ -29,6 +29,8 @@
 - **Bobot ditetapkan peneliti**: bobot kriteria SAW ditentukan peneliti sebagai data master (dikelola admin); seluruh perhitungan memakai bobot yang sama dan bobot yang dipakai tercatat pada tiap batch, halaman riwayat, dan ekspor CSV.
 - **Export CSV**: unduh hasil rekomendasi batch terbaru sebagai berkas CSV.
 - **Panel admin**: kelola data karier (skill, gaji, demand) serta kriteria dan bobot SAW.
+- **Pemulihan kata sandi lewat admin**: kata sandi mahasiswa yang lupa direset admin menjadi kata sandi sementara; mahasiswa wajib menggantinya sendiri saat login berikutnya.
+- **Ganti kata sandi mandiri**: setiap pengguna dapat mengganti kata sandinya setelah memverifikasi kata sandi lama.
 
 ## Cara Jalan
 

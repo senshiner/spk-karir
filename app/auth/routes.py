@@ -3,7 +3,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 
 from app import db
 from app.auth import bp
-from app.auth.forms import LoginForm, RegisterForm
+from app.auth.forms import ChangePasswordForm, LoginForm, RegisterForm
 from app.models import User
 
 
@@ -51,3 +51,29 @@ def logout():
     logout_user()
     flash("Anda sudah keluar.", "info")
     return redirect(url_for("auth.login"))
+
+
+@bp.route("/ganti-sandi", methods=["GET", "POST"])
+@login_required
+def ganti_sandi():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if not current_user.check_password(form.kata_sandi_lama.data):
+            form.kata_sandi_lama.errors.append("Kata sandi lama salah.")
+        elif form.kata_sandi_baru.data == form.kata_sandi_lama.data:
+            form.kata_sandi_baru.errors.append(
+                "Kata sandi baru harus berbeda dari kata sandi lama."
+            )
+        else:
+            current_user.set_password(form.kata_sandi_baru.data)
+            current_user.wajib_ganti_sandi = False
+            db.session.commit()
+            flash("Kata sandi berhasil diganti.", "success")
+            if current_user.role == "admin":
+                return redirect(url_for("admin.dashboard"))
+            return redirect(url_for("spk.index"))
+    return render_template(
+        "auth/ganti_sandi.html",
+        form=form,
+        wajib=current_user.wajib_ganti_sandi,
+    )

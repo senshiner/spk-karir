@@ -2,8 +2,8 @@
 import os
 
 from dotenv import load_dotenv
-from flask import Flask
-from flask_login import LoginManager
+from flask import Flask, redirect, request, url_for
+from flask_login import LoginManager, current_user
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -38,6 +38,20 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(spk_bp)
+
+    @app.before_request
+    def _wajib_ganti_sandi():
+        # Mahasiswa yang kata sandinya baru direset admin hanya boleh
+        # membuka halaman ganti sandi (dan logout) sampai ia menetapkan
+        # kata sandi pilihannya sendiri.
+        if (
+            current_user.is_authenticated
+            and current_user.role == "mahasiswa"
+            and current_user.wajib_ganti_sandi
+            and request.endpoint
+            not in (None, "auth.ganti_sandi", "auth.logout", "static")
+        ):
+            return redirect(url_for("auth.ganti_sandi"))
 
     with app.app_context():
         db.create_all()

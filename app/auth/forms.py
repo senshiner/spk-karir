@@ -40,6 +40,13 @@ class RegisterForm(FlaskForm):
             Length(min=6, message="Kata sandi minimal 6 karakter."),
         ],
     )
+    konfirmasi = PasswordField(
+        "Ulangi kata sandi",
+        validators=[
+            DataRequired(message="Ulangi kata sandi wajib diisi."),
+            EqualTo("password", message="Konfirmasi tidak sama dengan kata sandi."),
+        ],
+    )
     submit = SubmitField("Daftar")
 
 

@@ -39,10 +39,15 @@
             {{ form.username(class="input") }}
             {% if form.username.errors %}<p class="field-error">{{ form.username.errors[0] }}</p>{% endif %}
           </div>
-          <div class="mb-6">
+          <div class="mb-4">
             <label class="label" for="password">{{ form.password.label.text }} (min. 6 karakter)</label>
             {{ form.password(class="input") }}
             {% if form.password.errors %}<p class="field-error">{{ form.password.errors[0] }}</p>{% endif %}
+          </div>
+          <div class="mb-6">
+            <label class="label" for="konfirmasi">{{ form.konfirmasi.label.text }}</label>
+            {{ form.konfirmasi(class="input") }}
+            {% if form.konfirmasi.errors %}<p class="field-error">{{ form.konfirmasi.errors[0] }}</p>{% endif %}
           </div>
           {{ form.submit(class="btn-primary w-full") }}
         </form>

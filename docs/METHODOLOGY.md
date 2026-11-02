@@ -111,11 +111,12 @@ acak Dirichlet di sekitar bobot default (seed 42), memakai fungsi CBF dan SAW ya
 sama persis dengan aplikasi. Hasil ditulis ke `analysis/hasil_sensitivitas.md`
 (tabel dan kesimpulan, siap dikutip untuk Bab 4) dan `analysis/hasil_sensitivitas.csv`.
 
-Ringkasan hasil: peringkat pertama bertahan pada 91,6% skenario dan himpunan
-3 besar utuh pada 74,6% skenario; perubahan terbesar terjadi pada skenario
+Ringkasan hasil: peringkat pertama bertahan pada 90,9% skenario dan himpunan
+3 besar utuh pada 79,3% skenario; perubahan terbesar terjadi pada skenario
 dominasi tunggal. Bobot default (0,35/0,25/0,20/0,20) layak dipakai karena ranking
-cukup stabil pada variasi wajar, namun panel bobot kustom tetap ditawarkan agar
-mahasiswa yang memprioritaskan gaji atau demand dapat menyesuaikan.
+cukup stabil pada variasi wajar. Bobot ini ditetapkan peneliti sebagai data
+master dan tidak diubah pengguna, sehingga kestabilan ini menjadi dasar
+pemakaiannya.
 
 ## Diagram Perancangan
 

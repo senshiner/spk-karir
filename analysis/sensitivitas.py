@@ -308,12 +308,12 @@ def main():
         f"perubahan terbesar; dominasi C2 (gaji) dan C3 (demand) paling "
         f"berpengaruh karena kedua kriteria ini tidak bergantung pada "
         f"profil mahasiswa. Rata-rata pergeseran peringkat keseluruhan "
-        f"sebesar {gsg:.2f} posisi dari 19 karier per skenario.",
+        f"sebesar {gsg:.2f} posisi dari {len(karier)} karier per skenario.",
         f"5. Implikasi untuk penelitian: bobot default "
         f"(0.35/0.25/0.20/0.20) layak dipakai karena ranking cukup stabil "
-        f"pada variasi wajar, namun panel bobot kustom tetap perlu "
-        f"ditawarkan agar mahasiswa yang memprioritaskan gaji atau demand "
-        f"dapat menyesuaikan.",
+        f"pada variasi wajar. Bobot ditetapkan peneliti sebagai data "
+        f"master dan tidak diubah pengguna, sehingga kestabilan ini "
+        f"menjadi dasar pemakaiannya.",
     ]
     isi = "\n".join(header + kesimpulan + [""] + hasil_md)
     with open(os.path.join(BASE_DIR, "hasil_sensitivitas.md"), "w",

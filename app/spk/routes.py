@@ -104,7 +104,7 @@ def _normalisasi_bobot(bobot):
     return list(bobot), False
 
 
-KRITERIA_INTi = ("C1", "C2", "C3", "C4")
+KRITERIA_INTI = ("C1", "C2", "C3", "C4")
 
 
 def _kriteria_inti():
@@ -115,13 +115,13 @@ def _kriteria_inti():
     kolom matriks yang salah secara diam-diam.
     """
     peta = {c.kode: c for c in Criterion.query.all()}
-    hilang = [k for k in KRITERIA_INTi if k not in peta]
+    hilang = [k for k in KRITERIA_INTI if k not in peta]
     if hilang:
         raise ValueError(
             "Kriteria inti tidak lengkap (hilang: %s). "
             "Lengkapi C1 sampai C4 di panel admin." % ", ".join(hilang)
         )
-    return [peta[k] for k in KRITERIA_INTi]
+    return [peta[k] for k in KRITERIA_INTI]
 
 
 def _bobot_default():

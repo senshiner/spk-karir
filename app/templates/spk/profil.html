@@ -9,10 +9,17 @@
      pesan Bahasa Indonesia. #}
   <form method="post" novalidate>
     {{ form.hidden_tag() }}
-    <div class="mb-8 max-w-md">
-      <label class="label" for="nama">{{ form.nama.label.text }}</label>
-      {{ form.nama(class="input") }}
-      {% if form.nama.errors %}<p class="field-error">{{ form.nama.errors[0] }}</p>{% endif %}
+    <div class="mb-8 max-w-md space-y-4">
+      <div>
+        <label class="label" for="nama">{{ form.nama.label.text }}</label>
+        {{ form.nama(class="input") }}
+        {% if form.nama.errors %}<p class="field-error">{{ form.nama.errors[0] }}</p>{% endif %}
+      </div>
+      <div>
+        <label class="label" for="universitas">{{ form.universitas.label.text }}</label>
+        {{ form.universitas(class="input") }}
+        {% if form.universitas.errors %}<p class="field-error">{{ form.universitas.errors[0] }}</p>{% endif %}
+      </div>
     </div>
 
     <p class="font-display text-base font-semibold th-text mb-1">Tingkat penguasaan skill</p>
@@ -47,9 +54,4 @@
   </form>
 </div>
 
-<div class="card p-6 md:p-8 max-w-3xl mt-6">
-  <p class="font-display text-base font-semibold th-text mb-1">Keamanan Akun</p>
-  <p class="text-sm th-text-3 mb-4">Ganti kata sandi akun Anda secara berkala. Kata sandi lama diperlukan untuk verifikasi.</p>
-  <a href="{{ url_for('auth.ganti_sandi') }}" class="btn-primary">Ganti Kata Sandi</a>
-</div>
 {% endblock %}

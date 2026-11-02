@@ -244,6 +244,7 @@ def profil():
                 profile = StudentProfile(user_id=current_user.id)
                 db.session.add(profile)
             profile.nama = form.nama.data.strip()
+            profile.universitas = (form.universitas.data or "").strip()
             # Simpan hanya skill bernilai > 0, format "Skill:nilai"
             # (konsisten dengan format Career.skills).
             profile.skills = ", ".join(
@@ -269,6 +270,7 @@ def profil():
 
     if profile and not form.is_submitted():
         form.nama.data = profile.nama
+        form.universitas.data = profile.universitas or ""
         form.minat.data = profile.minat_ids()
         nilai_awal = profile.skill_scores()
     elif form.is_submitted():

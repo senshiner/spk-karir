@@ -19,6 +19,13 @@ class ProfileForm(FlaskForm):
             Length(max=120, message="Nama maksimal 120 karakter."),
         ],
     )
+    universitas = StringField(
+        "Universitas",
+        validators=[
+            Optional(),
+            Length(max=120, message="Universitas maksimal 120 karakter."),
+        ],
+    )
     minat = SelectMultipleField(
         "Karier yang diminati",
         widget=ListWidget(prefix_label=False),

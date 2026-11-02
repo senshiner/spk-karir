@@ -82,6 +82,7 @@ class StudentProfile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     nama = db.Column(db.String(120), nullable=False)
+    universitas = db.Column(db.String(120), default="")
     # Format: "Skill:nilai" dipisah koma, mis. "Python:4, SQL:3".
     # Nilai = tingkat penguasaan yang dinilai sendiri oleh mahasiswa
     # (skala 0-5; hanya skill bernilai > 0 yang disimpan). Entri lama
